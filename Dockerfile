@@ -1,15 +1,6 @@
-FROM golang:1.22-alpine
-
-EXPOSE 8080
+FROM golang:1.22-alpine AS build
 
 WORKDIR /app
-
-ENV PORT 8080
-ENV DB_HOST postgres
-ENV DB_USER root
-ENV DB_PASSWORD root
-ENV DB_NAME root
-ENV DB_PORT 5432
 
 COPY ./assets/ /app/assets/
 COPY ./controllers/ /app/controllers/
@@ -21,8 +12,23 @@ COPY ./main.go /app/main.go
 COPY ./go.mod /app/go.mod
 COPY ./go.sum /app/go.sum
 
-COPY ./wait-for-it.sh /app/wait-for-it.sh
-RUN chmod +x /app/wait-for-it.sh
+RUN go build main.go
 
-# Muda o CMD para esperar o banco estar pronto
-CMD ["./wait-for-it.sh", "postgres:5432", "--", "go", "run", "main.go"]
+# Build
+FROM golang:1.22 AS production
+WORKDIR /app
+
+EXPOSE 8080
+
+ENV PORT 8080
+ENV DB_HOST postgres
+ENV DB_USER root
+ENV DB_PASSWORD root
+ENV DB_NAME root
+ENV DB_PORT 5432
+
+COPY ./assets/ /app/assets/
+COPY ./templates/ /app/templates/
+COPY --from=build /app/main /app/main
+
+CMD ["./main"]
