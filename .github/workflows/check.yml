@@ -16,7 +16,7 @@ jobs:
         go-version: '1.22'
 
     - name: Inicia banco
-      run: docker compose up postgres
+      run: docker compose up -d postgres:latest
 
     - name: Lint
       uses: golangci/golangci-lint-action@v6
