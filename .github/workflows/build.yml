@@ -4,17 +4,13 @@ name: "Construção do Artefato"
 on: 
     push:
         branches: ["main", "check-dk"]
-    workflow_dispatch:
+        workflow_dispatch:
 
 jobs:
     build:
           runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            
-            - name: Set up Go
-                uses: actions/setup-go@v4
-                with:
-                    go-version: '1.22'
+           
             - name: Build da imagem docker 
                 run: docker build --target=production -t levizpiromancer/projeto_go_prod:${{github.sha}} .
