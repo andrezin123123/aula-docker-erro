@@ -2,20 +2,12 @@ FROM golang:1.22-alpine AS build
 
 WORKDIR /app
 
-COPY ./assets/ /app/assets/
-COPY ./controllers/ /app/controllers/
-COPY ./database/ /app/database/
-COPY ./models/ /app/models/
-COPY ./routes/ /app/routes/
-COPY ./templates/ /app/templates/
-COPY ./main.go /app/main.go
-COPY ./go.mod /app/go.mod
-COPY ./go.sum /app/go.sum
+COPY . /app
 
 RUN go build main.go
 
 # Build
-FROM golang:1.22 AS production
+FROM alpine:latest AS production
 WORKDIR /app
 
 EXPOSE 8080
