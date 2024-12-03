@@ -21,6 +21,8 @@ func ConectaComBancoDeDados() {
         log.Panic("Erro ao conectar com banco de dados")
     }
 
-	
+
     DB.AutoMigrate(&models.Aluno{})
 }
+
+// teste de comentario
