@@ -14,7 +14,7 @@ COPY ./go.sum /app/go.sum
 
 RUN go build main.go
 
-# Build aas df
+# Build 
 FROM golang:1.22 AS production
 WORKDIR /app
 
@@ -31,4 +31,4 @@ COPY ./assets/ /app/assets/
 COPY ./templates/ /app/templates/
 COPY --from=build /app/main /app/main
 
-CMD ["./main"]
+ENTRYPOINT ["./main"]
