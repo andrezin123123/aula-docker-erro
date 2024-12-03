@@ -14,7 +14,7 @@ COPY ./go.sum /app/go.sum
 
 RUN go build main.go
 
-# Build
+# Build aas
 FROM golang:1.22 AS production
 WORKDIR /app
 
